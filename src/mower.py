@@ -30,6 +30,10 @@ class Mower:
                 self.LEFT: self.EAST,
                 self.RIGHT: self.WEST,
             },
+            self.EAST: {
+                self.LEFT: self.NORTH,
+                self.RIGHT: self.SOUTH,
+            },
         }
         self.__facing = facings_when_spinning[self.__facing][commands]
 
