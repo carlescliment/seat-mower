@@ -132,7 +132,7 @@ class Mower:
     def deploy(cls, coordinate_x: int, coordinate_y: int, facing: str):
         return cls(Navigator(Coordinates(coordinate_x, coordinate_y), facing))
 
-    def execute(self, commands: str) -> 'Mower':
+    def execute(self, commands: list) -> 'Mower':
         for command in commands:
             if command == self.MOVE_FORWARD:
                 self.__navigator.move_forward()
