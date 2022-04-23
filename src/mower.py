@@ -111,12 +111,7 @@ class Navigator:
 
     def move_forward(self) -> 'Navigator':
         new_position = self.__facing.if_moving_forward_from(self.__position)
-        if (
-            new_position.y > self.__plateau_limits.y
-            or new_position.x > self.__plateau_limits.x
-            or new_position.y < 0
-            or new_position.x < 0
-        ):
+        if not self.__is_in_the_plateau(new_position):
             raise CannotGoOutOfThePlateauError()
 
         self.__position = new_position
@@ -132,6 +127,12 @@ class Navigator:
         self.__facing = self.__facing.if_turning_right()
 
         return self
+
+    def __is_in_the_plateau(self, position: Coordinates) -> bool:
+        return (
+            self.__plateau_limits.y >= position.y >= 0
+            and self.__plateau_limits.x >= position.x >= 0
+        )
 
     def __repr__(self):
         return f'{self.__position} {self.__facing}'
