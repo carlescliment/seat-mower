@@ -128,6 +128,7 @@ class Mower:
 
     MOVE_FORWARD = 'M'
     TURN_LEFT = 'L'
+    TURN_RIGHT = 'R'
 
     def __init__(self, navigator: Navigator):
         self.__navigator = navigator
@@ -137,13 +138,13 @@ class Mower:
         return cls(Navigator(Coordinates(coordinate_x, coordinate_y), facing))
 
     def execute(self, commands: list) -> 'Mower':
+        procedures = {
+            self.MOVE_FORWARD: lambda: self.__navigator.move_forward(),
+            self.TURN_LEFT: lambda: self.__navigator.turn_left(),
+            self.TURN_RIGHT: lambda: self.__navigator.turn_right(),
+        }
         for command in commands:
-            if command == self.MOVE_FORWARD:
-                self.__navigator.move_forward()
-            elif command == self.TURN_LEFT:
-                self.__navigator.turn_left()
-            else:
-                self.__navigator.turn_right()
+            procedures[command]()
 
         return self
 
