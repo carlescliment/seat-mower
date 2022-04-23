@@ -46,3 +46,14 @@ with description('Seat Mower'):
             mower = Mower.deploy(1, 2, SOUTH)
 
             expect(mower.report()).to(equal(f'1 2 {SOUTH}'))
+
+    with context('when spinning the mower right or left'):
+
+        with context('when facing north'):
+
+            with it('will face west when spinning left'):
+                mower = Mower.deploy(0, 0, NORTH)
+
+                mower.execute('L')
+
+                expect(mower.report()).to(equal(f'0 0 {WEST}'))

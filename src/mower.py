@@ -8,5 +8,10 @@ class Mower:
     def deploy(cls, coordinate_x: int, coordinate_y: int, facing: str):
         return cls(coordinate_x, coordinate_y, facing)
 
+    def execute(self, commands: str) -> 'Mower':
+        self.__facing = 'W'
+
+        return self
+
     def report(self) -> str:
         return f'{self.__coordinate_x} {self.__coordinate_y} {self.__facing}'
