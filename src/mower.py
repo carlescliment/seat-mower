@@ -11,6 +11,9 @@ class CardinalPoint:
     def __repr__(self):
         raise NotImplementedError()
 
+    def __eq__(self, other):
+        return str(self) == str(other)
+
     @staticmethod
     def create(cardinal_point: str):
         cardinal_points = {
@@ -74,6 +77,16 @@ class Navigator:
     def where_is_it_currently_facing(self):
         return str(self.__cardinal_point)
 
+    def move_forward_from(self, coordinate_x, coordinate_y):
+        if self.__cardinal_point == North():
+            return coordinate_x, coordinate_y + 1
+        elif self.__cardinal_point == East():
+            return coordinate_x + 1, coordinate_y
+        elif self.__cardinal_point == South():
+            return coordinate_x, coordinate_y - 1
+        else:
+            return coordinate_x - 1, coordinate_y
+
     def turn(self, side: str) -> 'Navigator':
         self.__cardinal_point = self.__cardinal_point.if_turning(side)
 
@@ -95,14 +108,8 @@ class Mower:
 
     def execute(self, commands: str) -> 'Mower':
         if commands == self.MOVE_FORWARD:
-            if self.__navigator.where_is_it_currently_facing() == 'N':
-                self.__coordinate_y += 1
-            elif self.__navigator.where_is_it_currently_facing() == 'E':
-                self.__coordinate_x += 1
-            elif self.__navigator.where_is_it_currently_facing() == 'S':
-                self.__coordinate_y -= 1
-            else:
-                self.__coordinate_x -= 1
+            new_position = self.__navigator.move_forward_from(self.__coordinate_x, self.__coordinate_y)
+            self.__coordinate_x, self.__coordinate_y = new_position
         else:
             self.__navigator.turn(commands)
 
