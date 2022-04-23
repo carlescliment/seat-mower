@@ -9,10 +9,17 @@ class Mower:
         return cls(coordinate_x, coordinate_y, facing)
 
     def execute(self, commands: str) -> 'Mower':
-        if commands == 'L':
-            self.__facing = 'W'
-        elif commands == 'R':
-            self.__facing = 'E'
+        facings_when_spinning = {
+            'N': {
+                'L': 'W',
+                'R': 'E',
+            },
+            'W': {
+                'L': 'S',
+                'R': 'N',
+            }
+        }
+        self.__facing = facings_when_spinning[self.__facing][commands]
 
         return self
 
