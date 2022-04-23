@@ -1,3 +1,6 @@
+class CannotGoOutOfThePlateauError(Exception):
+    pass
+
 class Coordinates:
     def __init__(self, x: int, y: int):
         self.__x = x
@@ -101,12 +104,17 @@ class East(CardinalPoint):
 
 
 class Navigator:
-    def __init__(self, initial_position: Coordinates, initially_facing: str):
+    def __init__(self, initial_position: Coordinates, initially_facing: str, plateau_limits: Coordinates):
         self.__facing = CardinalPoint.create(initially_facing)
         self.__position = initial_position
+        self.__plateau_limits = plateau_limits
 
     def move_forward(self) -> 'Navigator':
-        self.__position = self.__facing.if_moving_forward_from(self.__position)
+        new_position = self.__facing.if_moving_forward_from(self.__position)
+        if new_position.y > self.__plateau_limits.y:
+            raise CannotGoOutOfThePlateauError()
+
+        self.__position = new_position
 
         return self
 
@@ -134,8 +142,12 @@ class Mower:
         self.__navigator = navigator
 
     @classmethod
-    def deploy(cls, coordinate_x: int, coordinate_y: int, facing: str):
-        return cls(Navigator(Coordinates(coordinate_x, coordinate_y), facing))
+    def deploy(cls, coordinate_x: int, coordinate_y: int, facing: str, plateau_max_x: int = 5, plateau_max_y: int = 5):
+        return cls(Navigator(
+            Coordinates(coordinate_x, coordinate_y),
+            facing,
+            Coordinates(plateau_max_x, plateau_max_y)
+        ))
 
     def execute(self, commands: list) -> 'Mower':
         procedures = {

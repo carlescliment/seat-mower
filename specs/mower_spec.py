@@ -6,10 +6,12 @@ from mamba import (
 )
 from expects import (
     expect,
-    equal
+    equal,
+    raise_error
 )
 
 from src.mower import (
+    CannotGoOutOfThePlateauError,
     Mower
 )
 
@@ -147,3 +149,19 @@ with description('Seat Mower'):
         mower.execute(['M', 'M', 'R', 'M', 'M', 'L', 'M', 'L'])
 
         expect(mower.report()).to(equal(f'2 3 {WEST}'))
+
+    with description('when going outside of the plateau'):
+        with it('raises an error when asked to go beyond the limits to the north'):
+            mower = Mower.deploy(0, 4, NORTH, 5, 5)
+
+            expect(lambda: mower.execute(['M', 'M'])).to(raise_error(CannotGoOutOfThePlateauError))
+
+        with it('stays in the last valid position'):
+            mower = Mower.deploy(0, 4, NORTH, 5, 5)
+
+            try:
+                mower.execute(['M', 'M'])
+            except CannotGoOutOfThePlateauError:
+                pass
+
+            expect(mower.report()).to(equal(f'0 5 {NORTH}'))
