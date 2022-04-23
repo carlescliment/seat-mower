@@ -7,11 +7,14 @@ class Compass:
     LEFT = 'L'
     RIGHT = 'R'
 
-    def __init__(self, facing: str):
-        self.__facing = facing
+    def __init__(self, cardinal_point: str):
+        self.__cardinal_point = cardinal_point
 
-    def turn(self, side: str) -> str:
-        facings_when_turning = {
+    def where_is_it_pointing_to(self):
+        return self.__cardinal_point
+
+    def turn(self, side: str) -> 'Compass':
+        cardinal_point_when_turning = {
             self.NORTH: {
                 self.LEFT: self.WEST,
                 self.RIGHT: self.EAST,
@@ -30,24 +33,26 @@ class Compass:
             },
         }
 
-        return facings_when_turning[self.__facing][side]
+        self.__cardinal_point = cardinal_point_when_turning[self.__cardinal_point][side]
+
+        return self
 
 
 class Mower:
 
-    def __init__(self, coordinate_x: int, coordinate_y: int, facing: str):
-        self.__facing = facing
+    def __init__(self, coordinate_x: int, coordinate_y: int, compass: Compass):
+        self.__compass = compass
         self.__coordinate_x = coordinate_x
         self.__coordinate_y = coordinate_y
 
     @classmethod
     def deploy(cls, coordinate_x: int, coordinate_y: int, facing: str):
-        return cls(coordinate_x, coordinate_y, facing)
+        return cls(coordinate_x, coordinate_y, Compass(facing))
 
     def execute(self, commands: str) -> 'Mower':
-        self.__facing = Compass(self.__facing).turn(commands)
+        self.__compass.turn(commands)
 
         return self
 
     def report(self) -> str:
-        return f'{self.__coordinate_x} {self.__coordinate_y} {self.__facing}'
+        return f'{self.__coordinate_x} {self.__coordinate_y} {self.__compass.where_is_it_pointing_to()}'
