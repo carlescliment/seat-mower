@@ -131,11 +131,12 @@ class Mower:
         return cls(Coordinates(coordinate_x, coordinate_y), Navigator(facing))
 
     def execute(self, commands: str) -> 'Mower':
-        if commands == self.MOVE_FORWARD:
-            new_position = self.__navigator.move_forward_from(self.__position)
-            self.__position = new_position
-        else:
-            self.__navigator.turn(commands)
+        for command in commands:
+            if command == self.MOVE_FORWARD:
+                new_position = self.__navigator.move_forward_from(self.__position)
+                self.__position = new_position
+            else:
+                self.__navigator.turn(command)
 
         return self
 

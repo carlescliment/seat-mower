@@ -140,3 +140,10 @@ with description('Seat Mower'):
             mower.execute('M')
 
             expect(mower.report()).to(equal(f'0 0 {WEST}'))
+
+    with it('can execute multiple instructions'):
+        mower = Mower.deploy(0, 0, NORTH)
+
+        mower.execute('MMRMMLML')
+
+        expect(mower.report()).to(equal(f'2 3 {WEST}'))
