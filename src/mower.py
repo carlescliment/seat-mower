@@ -101,8 +101,6 @@ class East(CardinalPoint):
 
 
 class Navigator:
-    LEFT = 'L'
-
     def __init__(self, initial_position: Coordinates, initially_facing: str):
         self.__facing = CardinalPoint.create(initially_facing)
         self.__position = initial_position
@@ -112,11 +110,13 @@ class Navigator:
 
         return self
 
-    def turn(self, side: str) -> 'Navigator':
-        if side == self.LEFT:
-            self.__facing = self.__facing.if_turning_left()
-        else:
-            self.__facing = self.__facing.if_turning_right()
+    def turn_left(self) -> 'Navigator':
+        self.__facing = self.__facing.if_turning_left()
+
+        return self
+
+    def turn_right(self) -> 'Navigator':
+        self.__facing = self.__facing.if_turning_right()
 
         return self
 
@@ -127,6 +127,7 @@ class Navigator:
 class Mower:
 
     MOVE_FORWARD = 'M'
+    TURN_LEFT = 'L'
 
     def __init__(self, navigator: Navigator):
         self.__navigator = navigator
@@ -139,8 +140,10 @@ class Mower:
         for command in commands:
             if command == self.MOVE_FORWARD:
                 self.__navigator.move_forward()
+            elif command == self.TURN_LEFT:
+                self.__navigator.turn_left()
             else:
-                self.__navigator.turn(command)
+                self.__navigator.turn_right()
 
         return self
 
