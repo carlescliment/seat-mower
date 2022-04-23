@@ -120,3 +120,23 @@ with description('Seat Mower'):
 
             expect(mower.report()).to(equal(f'0 1 {NORTH}'))
 
+        with it('can move east'):
+            mower = Mower.deploy(0, 0, EAST)
+
+            mower.execute('M')
+
+            expect(mower.report()).to(equal(f'1 0 {EAST}'))
+
+        with it('can move south'):
+            mower = Mower.deploy(0, 1, SOUTH)
+
+            mower.execute('M')
+
+            expect(mower.report()).to(equal(f'0 0 {SOUTH}'))
+
+        with it('can move west'):
+            mower = Mower.deploy(1, 0, WEST)
+
+            mower.execute('M')
+
+            expect(mower.report()).to(equal(f'0 0 {WEST}'))

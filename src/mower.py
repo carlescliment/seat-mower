@@ -95,7 +95,14 @@ class Mower:
 
     def execute(self, commands: str) -> 'Mower':
         if commands == self.MOVE_FORWARD:
-            self.__coordinate_y = 1
+            if self.__navigator.where_is_it_currently_facing() == 'N':
+                self.__coordinate_y = 1
+            elif self.__navigator.where_is_it_currently_facing() == 'E':
+                self.__coordinate_x = 1
+            elif self.__navigator.where_is_it_currently_facing() == 'S':
+                self.__coordinate_y = 0
+            else:
+                self.__coordinate_x = 0
         else:
             self.__navigator.turn(commands)
 
