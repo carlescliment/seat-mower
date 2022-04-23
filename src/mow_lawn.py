@@ -37,7 +37,7 @@ def _run_mower_procedure(
     return mower.execute(commands).report()
 
 
-def _parse_plateau(line: list) -> tuple:
+def _parse_plateau(line: str) -> tuple:
     plateau_max_x, plateau_max_y = line.split(' ')
 
     return int(plateau_max_x), int(plateau_max_y)
@@ -50,4 +50,5 @@ def _parse_deploy_situation(line: str) -> tuple:
 
 
 def _parse_commands(line: str) -> tuple:
-    return [command for command in line]
+    return tuple([command for command in line])
+

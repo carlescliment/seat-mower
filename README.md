@@ -20,3 +20,15 @@ docker-compose exec backend mamba -f documentation
 ```
 
 
+### Running the mowers
+
+Execute the following command to see the code in action:
+
+
+```
+docker-compose exec backend python run.py
+```
+
+If you want to test different outputs, you must edit the `run.py` file to change the instructions to the desired.
+
+
