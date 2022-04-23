@@ -1,4 +1,12 @@
 class Mower:
+    NORTH = 'N'
+    WEST = 'W'
+    SOUTH = 'S'
+    EAST = 'E'
+
+    LEFT = 'L'
+    RIGHT = 'R'
+
     def __init__(self, coordinate_x: int, coordinate_y: int, facing: str):
         self.__facing = facing
         self.__coordinate_x = coordinate_x
@@ -10,13 +18,13 @@ class Mower:
 
     def execute(self, commands: str) -> 'Mower':
         facings_when_spinning = {
-            'N': {
-                'L': 'W',
-                'R': 'E',
+            self.NORTH: {
+                self.LEFT: self.WEST,
+                self.RIGHT: self.EAST,
             },
-            'W': {
-                'L': 'S',
-                'R': 'N',
+            self.WEST: {
+                self.LEFT: self.SOUTH,
+                self.RIGHT: self.NORTH,
             }
         }
         self.__facing = facings_when_spinning[self.__facing][commands]

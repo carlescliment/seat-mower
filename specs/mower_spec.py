@@ -1,4 +1,5 @@
 from mamba import (
+    before,
     context,
     description,
     it
@@ -8,7 +9,9 @@ from expects import (
     equal
 )
 
-from src.mower import Mower
+from src.mower import (
+    Mower
+)
 
 NORTH = 'N'
 EAST = 'E'
@@ -51,32 +54,30 @@ with description('Seat Mower'):
 
         with context('when facing north'):
 
+            with before.each:
+                self.mower = Mower.deploy(0, 0, NORTH)
+
             with it('will face west when spinning left'):
-                mower = Mower.deploy(0, 0, NORTH)
+                self.mower.execute('L')
 
-                mower.execute('L')
-
-                expect(mower.report()).to(equal(f'0 0 {WEST}'))
+                expect(self.mower.report()).to(equal(f'0 0 {WEST}'))
 
             with it('will face east when spinning right'):
-                mower = Mower.deploy(0, 0, NORTH)
+                self.mower.execute('R')
 
-                mower.execute('R')
-
-                expect(mower.report()).to(equal(f'0 0 {EAST}'))
+                expect(self.mower.report()).to(equal(f'0 0 {EAST}'))
 
         with context('when facing west'):
 
+            with before.each:
+                self.mower = Mower.deploy(0, 0, WEST)
+
             with it('will face south when spinning left'):
-                mower = Mower.deploy(0, 0, WEST)
+                self.mower.execute('L')
 
-                mower.execute('L')
-
-                expect(mower.report()).to(equal(f'0 0 {SOUTH}'))
+                expect(self.mower.report()).to(equal(f'0 0 {SOUTH}'))
 
             with it('will face north when spinning right'):
-                mower = Mower.deploy(0, 0, WEST)
+                self.mower.execute('R')
 
-                mower.execute('R')
-
-                expect(mower.report()).to(equal(f'0 0 {NORTH}'))
+                expect(self.mower.report()).to(equal(f'0 0 {NORTH}'))
