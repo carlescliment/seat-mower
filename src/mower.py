@@ -82,6 +82,8 @@ class Navigator:
 
 class Mower:
 
+    MOVE_FORWARD = 'M'
+
     def __init__(self, coordinate_x: int, coordinate_y: int, navigator: Navigator):
         self.__navigator = navigator
         self.__coordinate_x = coordinate_x
@@ -92,7 +94,11 @@ class Mower:
         return cls(coordinate_x, coordinate_y, Navigator(facing))
 
     def execute(self, commands: str) -> 'Mower':
-        self.__navigator.turn(commands)
+        if commands == self.MOVE_FORWARD:
+            self.__coordinate_y = 1
+        else:
+            self.__navigator.turn(commands)
+
 
         return self
 

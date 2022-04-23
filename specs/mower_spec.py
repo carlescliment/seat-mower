@@ -111,3 +111,12 @@ with description('Seat Mower'):
                 self.mower.execute('R')
 
                 expect(self.mower.report()).to(equal(f'0 0 {SOUTH}'))
+
+    with context('when moving forward'):
+        with it('can move north'):
+            mower = Mower.deploy(0, 0, NORTH)
+
+            mower.execute('M')
+
+            expect(mower.report()).to(equal(f'0 1 {NORTH}'))
+
