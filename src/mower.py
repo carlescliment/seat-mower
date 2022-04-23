@@ -19,6 +19,7 @@ class Coordinates:
     def __repr__(self):
         return f'{self.__x} {self.__y}'
 
+
 class CardinalPoint:
 
     def if_turning(self, side):
@@ -54,7 +55,6 @@ class North(CardinalPoint):
             return West()
 
         return East()
-
 
     def __repr__(self):
         return 'N'
@@ -103,42 +103,43 @@ class East(CardinalPoint):
 
 
 class Navigator:
-    def __init__(self, initial_cardinal_point: str):
-        self.__cardinal_point = CardinalPoint.create(initial_cardinal_point)
+    def __init__(self, initial_position: Coordinates, initially_facing: str):
+        self.__facing = CardinalPoint.create(initially_facing)
+        self.__position = initial_position
 
-    def where_is_it_currently_facing(self):
-        return str(self.__cardinal_point)
-
-    def move_forward_from(self, position: Coordinates) -> Coordinates:
-        return self.__cardinal_point.if_moving_forward_from(position)
-
-    def turn(self, side: str) -> 'Navigator':
-        self.__cardinal_point = self.__cardinal_point.if_turning(side)
+    def move_forward(self) -> 'Navigator':
+        self.__position = self.__facing.if_moving_forward_from(self.__position)
 
         return self
+
+    def turn(self, side: str) -> 'Navigator':
+        self.__facing = self.__facing.if_turning(side)
+
+        return self
+
+    def __repr__(self):
+        return f'{self.__position} {self.__facing}'
 
 
 class Mower:
 
     MOVE_FORWARD = 'M'
 
-    def __init__(self, initial_position: Coordinates, navigator: Navigator):
+    def __init__(self, navigator: Navigator):
         self.__navigator = navigator
-        self.__position = initial_position
 
     @classmethod
     def deploy(cls, coordinate_x: int, coordinate_y: int, facing: str):
-        return cls(Coordinates(coordinate_x, coordinate_y), Navigator(facing))
+        return cls(Navigator(Coordinates(coordinate_x, coordinate_y), facing))
 
     def execute(self, commands: str) -> 'Mower':
         for command in commands:
             if command == self.MOVE_FORWARD:
-                new_position = self.__navigator.move_forward_from(self.__position)
-                self.__position = new_position
+                self.__navigator.move_forward()
             else:
                 self.__navigator.turn(command)
 
         return self
 
     def report(self) -> str:
-        return f'{self.__position} {self.__navigator.where_is_it_currently_facing()}'
+        return str(self.__navigator)
