@@ -19,7 +19,7 @@ class Position:
         return f'{self.__x} {self.__y}'
 
 
-class CardinalPoint:
+class Direction:
 
     def if_turning_left(self):
         raise NotImplementedError()
@@ -48,56 +48,56 @@ class CardinalPoint:
         return cardinal_points[cardinal_point]
 
 
-class North(CardinalPoint):
+class North(Direction):
     def if_moving_forward_from(self, position: Position) -> Position:
         return Position(position.x, position.y + 1)
 
-    def if_turning_left(self) -> CardinalPoint:
+    def if_turning_left(self) -> Direction:
         return West()
 
-    def if_turning_right(self) -> CardinalPoint:
+    def if_turning_right(self) -> Direction:
         return East()
 
     def __repr__(self):
         return 'N'
 
 
-class West(CardinalPoint):
+class West(Direction):
     def if_moving_forward_from(self, position: Position) -> Position:
         return Position(position.x - 1, position.y)
 
-    def if_turning_left(self) -> CardinalPoint:
+    def if_turning_left(self) -> Direction:
         return South()
 
-    def if_turning_right(self) -> CardinalPoint:
+    def if_turning_right(self) -> Direction:
         return North()
 
     def __repr__(self):
         return 'W'
 
 
-class South(CardinalPoint):
+class South(Direction):
     def if_moving_forward_from(self, position: Position) -> Position:
         return Position(position.x, position.y - 1)
 
-    def if_turning_left(self) -> CardinalPoint:
+    def if_turning_left(self) -> Direction:
         return East()
 
-    def if_turning_right(self) -> CardinalPoint:
+    def if_turning_right(self) -> Direction:
         return West()
 
     def __repr__(self):
         return 'S'
 
 
-class East(CardinalPoint):
+class East(Direction):
     def if_moving_forward_from(self, position: Position) -> Position:
         return Position(position.x + 1, position.y)
 
-    def if_turning_left(self) -> CardinalPoint:
+    def if_turning_left(self) -> Direction:
         return North()
 
-    def if_turning_right(self) -> CardinalPoint:
+    def if_turning_right(self) -> Direction:
         return South()
 
     def __repr__(self):
@@ -105,8 +105,8 @@ class East(CardinalPoint):
 
 
 class Navigator:
-    def __init__(self, initial_position: Position, initially_facing: str, plateau_limits: Position):
-        self.__facing = CardinalPoint.create(initially_facing)
+    def __init__(self, initial_position: Position, initial_direction: Direction, plateau_limits: Position):
+        self.__facing = initial_direction
         self.__position = initial_position
         self.__plateau_limits = plateau_limits
 
@@ -152,7 +152,7 @@ class Mower:
     def deploy(cls, coordinate_x: int, coordinate_y: int, facing: str, plateau_max_x: int, plateau_max_y: int):
         return cls(Navigator(
             Position(coordinate_x, coordinate_y),
-            facing,
+            Direction.create(facing),
             Position(plateau_max_x, plateau_max_y)
         ))
 
