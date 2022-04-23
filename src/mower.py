@@ -149,7 +149,7 @@ class Mower:
         self.__navigator = navigator
 
     @classmethod
-    def deploy(cls, coordinate_x: int, coordinate_y: int, facing: str, plateau_max_x: int = 5, plateau_max_y: int = 5):
+    def deploy(cls, coordinate_x: int, coordinate_y: int, facing: str, plateau_max_x: int, plateau_max_y: int):
         return cls(Navigator(
             Position(coordinate_x, coordinate_y),
             facing,

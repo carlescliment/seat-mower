@@ -23,32 +23,32 @@ SOUTH = 'S'
 with description('Seat Mower'):
     with context('when deploying the mower'):
         with it('can be faced north'):
-            mower = Mower.deploy(0, 0, NORTH)
+            mower = Mower.deploy(0, 0, NORTH, 5, 5)
 
             expect(mower.report()).to(equal(f'0 0 {NORTH}'))
 
         with it('can be faced east'):
-            mower = Mower.deploy(0, 0, EAST)
+            mower = Mower.deploy(0, 0, EAST, 5, 5)
 
             expect(mower.report()).to(equal(f'0 0 {EAST}'))
 
         with it('can be faced west'):
-            mower = Mower.deploy(0, 0, WEST)
+            mower = Mower.deploy(0, 0, WEST, 5, 5)
 
             expect(mower.report()).to(equal(f'0 0 {WEST}'))
 
         with it('can be faced south'):
-            mower = Mower.deploy(0, 0, SOUTH)
+            mower = Mower.deploy(0, 0, SOUTH, 5, 5)
 
             expect(mower.report()).to(equal(f'0 0 {SOUTH}'))
 
         with it('can be placed on a given X coordinate'):
-            mower = Mower.deploy(1, 0, SOUTH)
+            mower = Mower.deploy(1, 0, SOUTH, 5, 5)
 
             expect(mower.report()).to(equal(f'1 0 {SOUTH}'))
 
         with it('can be placed on a given Y coordinate'):
-            mower = Mower.deploy(1, 2, SOUTH)
+            mower = Mower.deploy(1, 2, SOUTH, 5, 5)
 
             expect(mower.report()).to(equal(f'1 2 {SOUTH}'))
 
@@ -57,7 +57,7 @@ with description('Seat Mower'):
         with context('when facing north'):
 
             with before.each:
-                self.mower = Mower.deploy(0, 0, NORTH)
+                self.mower = Mower.deploy(0, 0, NORTH, 5, 5)
 
             with it('will face west when spinning left'):
                 self.mower.execute(['L'])
@@ -72,7 +72,7 @@ with description('Seat Mower'):
         with context('when facing west'):
 
             with before.each:
-                self.mower = Mower.deploy(0, 0, WEST)
+                self.mower = Mower.deploy(0, 0, WEST, 5, 5)
 
             with it('will face south when spinning left'):
                 self.mower.execute(['L'])
@@ -87,7 +87,7 @@ with description('Seat Mower'):
         with context('when facing south'):
 
             with before.each:
-                self.mower = Mower.deploy(0, 0, SOUTH)
+                self.mower = Mower.deploy(0, 0, SOUTH, 5, 5)
 
             with it('will face east when spinning left'):
                 self.mower.execute(['L'])
@@ -102,7 +102,7 @@ with description('Seat Mower'):
         with context('when facing east'):
 
             with before.each:
-                self.mower = Mower.deploy(0, 0, EAST)
+                self.mower = Mower.deploy(0, 0, EAST, 5, 5)
 
             with it('will face north when spinning left'):
                 self.mower.execute(['L'])
@@ -116,35 +116,35 @@ with description('Seat Mower'):
 
     with context('when moving forward'):
         with it('can move north'):
-            mower = Mower.deploy(0, 0, NORTH)
+            mower = Mower.deploy(0, 0, NORTH, 5, 5)
 
             mower.execute(['M'])
 
             expect(mower.report()).to(equal(f'0 1 {NORTH}'))
 
         with it('can move east'):
-            mower = Mower.deploy(0, 0, EAST)
+            mower = Mower.deploy(0, 0, EAST, 5, 5)
 
             mower.execute(['M'])
 
             expect(mower.report()).to(equal(f'1 0 {EAST}'))
 
         with it('can move south'):
-            mower = Mower.deploy(0, 1, SOUTH)
+            mower = Mower.deploy(0, 1, SOUTH, 5, 5)
 
             mower.execute(['M'])
 
             expect(mower.report()).to(equal(f'0 0 {SOUTH}'))
 
         with it('can move west'):
-            mower = Mower.deploy(1, 0, WEST)
+            mower = Mower.deploy(1, 0, WEST, 5, 5)
 
             mower.execute(['M'])
 
             expect(mower.report()).to(equal(f'0 0 {WEST}'))
 
     with it('can execute multiple instructions'):
-        mower = Mower.deploy(0, 0, NORTH)
+        mower = Mower.deploy(0, 0, NORTH, 5, 5)
 
         mower.execute(['M', 'M', 'R', 'M', 'M', 'L', 'M', 'L'])
 
