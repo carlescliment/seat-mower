@@ -18,26 +18,31 @@ SOUTH = 'S'
 with description('Seat Mower'):
     with context('when deploying the mower'):
         with it('can be faced north'):
-            mower = Mower.deploy(0, NORTH)
+            mower = Mower.deploy(0, 0, NORTH)
 
-            expect(mower.report()).to(equal(f'0 {NORTH}'))
+            expect(mower.report()).to(equal(f'0 0 {NORTH}'))
 
         with it('can be faced east'):
-            mower = Mower.deploy(0, EAST)
+            mower = Mower.deploy(0, 0, EAST)
 
-            expect(mower.report()).to(equal(f'0 {EAST}'))
+            expect(mower.report()).to(equal(f'0 0 {EAST}'))
 
         with it('can be faced west'):
-            mower = Mower.deploy(0, WEST)
+            mower = Mower.deploy(0, 0, WEST)
 
-            expect(mower.report()).to(equal(f'0 {WEST}'))
+            expect(mower.report()).to(equal(f'0 0 {WEST}'))
 
         with it('can be faced south'):
-            mower = Mower.deploy(0, SOUTH)
+            mower = Mower.deploy(0, 0, SOUTH)
 
-            expect(mower.report()).to(equal(f'0 {SOUTH}'))
+            expect(mower.report()).to(equal(f'0 0 {SOUTH}'))
 
         with it('can be placed on a given X coordinate'):
-            mower = Mower.deploy(1, SOUTH)
+            mower = Mower.deploy(1, 0, SOUTH)
 
-            expect(mower.report()).to(equal(f'1 {SOUTH}'))
+            expect(mower.report()).to(equal(f'1 0 {SOUTH}'))
+
+        with it('can be placed on a given Y coordinate'):
+            mower = Mower.deploy(1, 2, SOUTH)
+
+            expect(mower.report()).to(equal(f'1 2 {SOUTH}'))
