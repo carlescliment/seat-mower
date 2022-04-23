@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  backend:
+    container_name: seat_backend
+    build: ./
+    volumes:
+      - ./:/home/seat/mower
+    working_dir: "/home/seat/mower"
