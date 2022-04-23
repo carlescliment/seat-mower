@@ -1,7 +1,8 @@
 class CannotGoOutOfThePlateauError(Exception):
     pass
 
-class Coordinates:
+
+class Position:
     def __init__(self, x: int, y: int):
         self.__x = x
         self.__y = y
@@ -26,7 +27,7 @@ class CardinalPoint:
     def if_turning_right(self):
         raise NotImplementedError()
 
-    def if_moving_forward_from(self, coordinates: Coordinates) -> Coordinates:
+    def if_moving_forward_from(self, position: Position) -> Position:
         raise NotImplementedError()
 
     def __repr__(self):
@@ -48,8 +49,8 @@ class CardinalPoint:
 
 
 class North(CardinalPoint):
-    def if_moving_forward_from(self, coordinates: Coordinates) -> Coordinates:
-        return Coordinates(coordinates.x, coordinates.y + 1)
+    def if_moving_forward_from(self, position: Position) -> Position:
+        return Position(position.x, position.y + 1)
 
     def if_turning_left(self) -> CardinalPoint:
         return West()
@@ -62,8 +63,8 @@ class North(CardinalPoint):
 
 
 class West(CardinalPoint):
-    def if_moving_forward_from(self, coordinates: Coordinates) -> Coordinates:
-        return Coordinates(coordinates.x - 1, coordinates.y)
+    def if_moving_forward_from(self, position: Position) -> Position:
+        return Position(position.x - 1, position.y)
 
     def if_turning_left(self) -> CardinalPoint:
         return South()
@@ -76,8 +77,8 @@ class West(CardinalPoint):
 
 
 class South(CardinalPoint):
-    def if_moving_forward_from(self, coordinates: Coordinates) -> Coordinates:
-        return Coordinates(coordinates.x, coordinates.y - 1)
+    def if_moving_forward_from(self, position: Position) -> Position:
+        return Position(position.x, position.y - 1)
 
     def if_turning_left(self) -> CardinalPoint:
         return East()
@@ -90,8 +91,8 @@ class South(CardinalPoint):
 
 
 class East(CardinalPoint):
-    def if_moving_forward_from(self, coordinates: Coordinates) -> Coordinates:
-        return Coordinates(coordinates.x + 1, coordinates.y)
+    def if_moving_forward_from(self, position: Position) -> Position:
+        return Position(position.x + 1, position.y)
 
     def if_turning_left(self) -> CardinalPoint:
         return North()
@@ -104,7 +105,7 @@ class East(CardinalPoint):
 
 
 class Navigator:
-    def __init__(self, initial_position: Coordinates, initially_facing: str, plateau_limits: Coordinates):
+    def __init__(self, initial_position: Position, initially_facing: str, plateau_limits: Position):
         self.__facing = CardinalPoint.create(initially_facing)
         self.__position = initial_position
         self.__plateau_limits = plateau_limits
@@ -128,7 +129,7 @@ class Navigator:
 
         return self
 
-    def __is_in_the_plateau(self, position: Coordinates) -> bool:
+    def __is_in_the_plateau(self, position: Position) -> bool:
         return (
             self.__plateau_limits.y >= position.y >= 0
             and self.__plateau_limits.x >= position.x >= 0
@@ -150,9 +151,9 @@ class Mower:
     @classmethod
     def deploy(cls, coordinate_x: int, coordinate_y: int, facing: str, plateau_max_x: int = 5, plateau_max_y: int = 5):
         return cls(Navigator(
-            Coordinates(coordinate_x, coordinate_y),
+            Position(coordinate_x, coordinate_y),
             facing,
-            Coordinates(plateau_max_x, plateau_max_y)
+            Position(plateau_max_x, plateau_max_y)
         ))
 
     def execute(self, commands: list) -> 'Mower':
