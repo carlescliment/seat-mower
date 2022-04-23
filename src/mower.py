@@ -8,6 +8,9 @@ class CardinalPoint:
     def if_turning(self, side):
         raise NotImplementedError()
 
+    def if_moving_forward_from(self, coordinate_x: int, coordinate_y: int) -> tuple:
+        raise NotImplementedError()
+
     def __repr__(self):
         raise NotImplementedError()
 
@@ -27,17 +30,24 @@ class CardinalPoint:
 
 
 class North(CardinalPoint):
+    def if_moving_forward_from(self, coordinate_x: int, coordinate_y: int) -> tuple:
+        return coordinate_x, coordinate_y + 1
+
     def if_turning(self, side: str):
         if side == Turn.LEFT:
             return West()
 
         return East()
 
+
     def __repr__(self):
         return 'N'
 
 
 class West(CardinalPoint):
+    def if_moving_forward_from(self, coordinate_x: int, coordinate_y: int) -> tuple:
+        return coordinate_x - 1, coordinate_y
+
     def if_turning(self, side):
         if side == Turn.LEFT:
             return South()
@@ -49,6 +59,9 @@ class West(CardinalPoint):
 
 
 class South(CardinalPoint):
+    def if_moving_forward_from(self, coordinate_x: int, coordinate_y: int) -> tuple:
+        return coordinate_x, coordinate_y - 1
+
     def if_turning(self, side):
         if side == Turn.LEFT:
             return East()
@@ -60,6 +73,9 @@ class South(CardinalPoint):
 
 
 class East(CardinalPoint):
+    def if_moving_forward_from(self, coordinate_x: int, coordinate_y: int) -> tuple:
+        return coordinate_x + 1, coordinate_y
+
     def if_turning(self, side):
         if side == Turn.LEFT:
             return North()
@@ -78,14 +94,7 @@ class Navigator:
         return str(self.__cardinal_point)
 
     def move_forward_from(self, coordinate_x, coordinate_y):
-        if self.__cardinal_point == North():
-            return coordinate_x, coordinate_y + 1
-        elif self.__cardinal_point == East():
-            return coordinate_x + 1, coordinate_y
-        elif self.__cardinal_point == South():
-            return coordinate_x, coordinate_y - 1
-        else:
-            return coordinate_x - 1, coordinate_y
+        return self.__cardinal_point.if_moving_forward_from(coordinate_x, coordinate_y)
 
     def turn(self, side: str) -> 'Navigator':
         self.__cardinal_point = self.__cardinal_point.if_turning(side)
