@@ -156,6 +156,21 @@ with description('Seat Mower'):
 
             expect(lambda: mower.execute(['M', 'M'])).to(raise_error(CannotGoOutOfThePlateauError))
 
+        with it('raises an error when asked to go beyond the limits to the east'):
+            mower = Mower.deploy(4, 0, EAST, 5, 5)
+
+            expect(lambda: mower.execute(['M', 'M'])).to(raise_error(CannotGoOutOfThePlateauError))
+
+        with it('raises an error when asked to go beyond the limits to the south'):
+            mower = Mower.deploy(0, 1, SOUTH, 5, 5)
+
+            expect(lambda: mower.execute(['M', 'M'])).to(raise_error(CannotGoOutOfThePlateauError))
+
+        with it('raises an error when asked to go beyond the limits to the west'):
+            mower = Mower.deploy(1, 0, WEST, 5, 5)
+
+            expect(lambda: mower.execute(['M', 'M'])).to(raise_error(CannotGoOutOfThePlateauError))
+
         with it('stays in the last valid position'):
             mower = Mower.deploy(0, 4, NORTH, 5, 5)
 
