@@ -1,8 +1,10 @@
 class Mower:
+    def __init__(self, facing):
+        self._facing = facing
 
     @classmethod
     def deploy(cls, facing: str):
-        return cls()
+        return cls(facing)
 
     def report(self) -> str:
-        return 'N'
+        return self._facing
