@@ -1,8 +1,3 @@
-class Turn:
-    LEFT = 'L'
-    RIGHT = 'R'
-
-
 class Coordinates:
     def __init__(self, x: int, y: int):
         self.__x = x
@@ -22,7 +17,10 @@ class Coordinates:
 
 class CardinalPoint:
 
-    def if_turning(self, side):
+    def if_turning_left(self):
+        raise NotImplementedError()
+
+    def if_turning_right(self):
         raise NotImplementedError()
 
     def if_moving_forward_from(self, coordinates: Coordinates) -> Coordinates:
@@ -50,10 +48,10 @@ class North(CardinalPoint):
     def if_moving_forward_from(self, coordinates: Coordinates) -> Coordinates:
         return Coordinates(coordinates.x, coordinates.y + 1)
 
-    def if_turning(self, side: str):
-        if side == Turn.LEFT:
-            return West()
+    def if_turning_left(self) -> CardinalPoint:
+        return West()
 
+    def if_turning_right(self) -> CardinalPoint:
         return East()
 
     def __repr__(self):
@@ -64,10 +62,10 @@ class West(CardinalPoint):
     def if_moving_forward_from(self, coordinates: Coordinates) -> Coordinates:
         return Coordinates(coordinates.x - 1, coordinates.y)
 
-    def if_turning(self, side):
-        if side == Turn.LEFT:
-            return South()
+    def if_turning_left(self) -> CardinalPoint:
+        return South()
 
+    def if_turning_right(self) -> CardinalPoint:
         return North()
 
     def __repr__(self):
@@ -78,10 +76,10 @@ class South(CardinalPoint):
     def if_moving_forward_from(self, coordinates: Coordinates) -> Coordinates:
         return Coordinates(coordinates.x, coordinates.y - 1)
 
-    def if_turning(self, side):
-        if side == Turn.LEFT:
-            return East()
+    def if_turning_left(self) -> CardinalPoint:
+        return East()
 
+    def if_turning_right(self) -> CardinalPoint:
         return West()
 
     def __repr__(self):
@@ -92,10 +90,10 @@ class East(CardinalPoint):
     def if_moving_forward_from(self, coordinates: Coordinates) -> Coordinates:
         return Coordinates(coordinates.x + 1, coordinates.y)
 
-    def if_turning(self, side):
-        if side == Turn.LEFT:
-            return North()
+    def if_turning_left(self) -> CardinalPoint:
+        return North()
 
+    def if_turning_right(self) -> CardinalPoint:
         return South()
 
     def __repr__(self):
@@ -103,6 +101,8 @@ class East(CardinalPoint):
 
 
 class Navigator:
+    LEFT = 'L'
+
     def __init__(self, initial_position: Coordinates, initially_facing: str):
         self.__facing = CardinalPoint.create(initially_facing)
         self.__position = initial_position
@@ -113,7 +113,10 @@ class Navigator:
         return self
 
     def turn(self, side: str) -> 'Navigator':
-        self.__facing = self.__facing.if_turning(side)
+        if side == self.LEFT:
+            self.__facing = self.__facing.if_turning_left()
+        else:
+            self.__facing = self.__facing.if_turning_right()
 
         return self
 
